@@ -1,0 +1,17 @@
+Microsoft Windows [Version 10.0.22631.4037]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\chbas\OneDrive\2 Materias\UP - Cómputo Distribuido\0231673_SistemasDistribuidos>curl -X POST http://localhost:8080/adduser -H "Content-Type: application/json" -d "{\"name\":\"Christian Matos\", \"age\":22}"
+{"id":1,"name":"Christian Matos","age":22}
+
+C:\Users\chbas\OneDrive\2 Materias\UP - Cómputo Distribuido\0231673_SistemasDistribuidos>curl -X POST http://localhost:8080/adduser -H "Content-Type: application/json" -d "{\"name\":\"Maximiliano Iram\", \"age\":25}"
+{"id":2,"name":"Maximiliano Iram","age":25}
+
+C:\Users\chbas\OneDrive\2 Materias\UP - Cómputo Distribuido\0231673_SistemasDistribuidos>curl http://localhost:8080/getusers
+[{"id":1,"name":"Christian Matos","age":22},{"id":2,"name":"Maximiliano Iram","age":25}]
+
+C:\Users\chbas\OneDrive\2 Materias\UP - Cómputo Distribuido\0231673_SistemasDistribuidos>curl -X POST http://localhost:8080/adduser -H "Content-Type: application/json" -d "{\"name\":\"Dania Venegas\", \"age\":24}"
+{"id":3,"name":"Dania Venegas","age":24}
+
+C:\Users\chbas\OneDrive\2 Materias\UP - Cómputo Distribuido\0231673_SistemasDistribuidos>curl http://localhost:8080/getusers
+[{"id":1,"name":"Christian Matos","age":22},{"id":2,"name":"Maximiliano Iram","age":25},{"id":3,"name":"Dania Venegas","age":24}]   
