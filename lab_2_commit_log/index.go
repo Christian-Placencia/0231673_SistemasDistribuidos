@@ -1,4 +1,3 @@
-// index.go
 package log
 
 import (

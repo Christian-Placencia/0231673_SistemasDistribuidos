@@ -1,4 +1,3 @@
-// segment.go
 package log
 
 import (
@@ -6,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	api "github.com/Robinthatdoesnotsuck/api/log_v1"
+	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/lab_2_commit_log/api/v1"
 	"google.golang.org/protobuf/proto"
 )
 

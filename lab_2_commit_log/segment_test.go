@@ -1,3 +1,14 @@
+package log
+
+import (
+	"io"
+	"os"
+	"testing"
+
+	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/lab_2_commit_log/api/v1"
+	"github.com/stretchr/testify/require"
+)
+
 func TestSegment(t *testing.T) {
 	dir, _ := os.MkdirTemp("", "segment-test")
 	defer os.RemoveAll(dir)

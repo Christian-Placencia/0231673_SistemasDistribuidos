@@ -1,14 +1,9 @@
 syntax = "proto3";
-
 package log.v1;
 
-// Specifies the Go package to use for the generated code
 option go_package = "github.com/Robinthatdoesnotsuck/api/log_v1";
 
 message Record {
-    // 'value' will store the actual log data as a byte array
     bytes value = 1;
-
-    // 'offset' will store the position of the log record
     uint64 offset = 2;
 }

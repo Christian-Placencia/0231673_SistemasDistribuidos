@@ -25,9 +25,7 @@ type Record struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// 'value' will store the actual log data as a byte array
-	Value []byte `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
-	// 'offset' will store the position of the log record
+	Value  []byte `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
 	Offset uint64 `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
 }
 
