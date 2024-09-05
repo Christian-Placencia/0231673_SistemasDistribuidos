@@ -99,11 +99,3 @@ func (s *store) Close() error {
 	// Close the file
 	return s.File.Close()
 }
-
-// Read implements the io.Reader interface for store.
-func (s *store) Read(p []byte) (int, error) {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	return s.File.Read(p)
-}
