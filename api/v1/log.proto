@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/chbas/commitlog/api/v1";
+
+// The CommitLog message that will be used in communication
+message CommitLog {
+  repeated string entries = 1; // A list of log entries
+}
+
+// Request to append a new entry to the log
+message AddEntryRequest {
+  string entry = 1;
+}
+
+// Response after adding a new entry
+message AddEntryResponse {
+  bool success = 1;
+}
+
+// Request to get an entry from the log by index
+message GetEntryRequest {
+  int32 index = 1;
+}
+
+// Response containing the entry or an error
+message GetEntryResponse {
+  string entry = 1;
+  string error = 2; // Empty if there's no error
+}
+
+// Define a service for interacting with the CommitLog
+service CommitLogService {
+  // Add an entry to the log
+  rpc AddEntry(AddEntryRequest) returns (AddEntryResponse);
+
+  // Get an entry from the log
+  rpc GetEntry(GetEntryRequest) returns (GetEntryResponse);
+}
+
+// Message for log records, used in advanced log operations
+message Record {
+  uint64 offset = 1; // The offset of the record in the log
+  bytes value = 2;   // The value of the record (as bytes)
+}
+
+// Request to produce a log record
+message ProduceRequest {
+  Record record = 1;
+}
+
+// Response after producing a log record, returning its offset
+message ProduceResponse {
+  uint64 offset = 1;
+}
+
+// Request to consume a log record by its offset
+message ConsumeRequest {
+  uint64 offset = 1;
+}
+
+// Response containing the consumed log record
+message ConsumeResponse {
+  Record record = 1;
+}
+
+// Service for producing and consuming log records
+service LogService {
+  // Produce a log record
+  rpc Produce(ProduceRequest) returns (ProduceResponse);
+
+  // Consume a log record by offset
+  rpc Consume(ConsumeRequest) returns (ConsumeResponse);
+}

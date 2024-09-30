@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/Christian-Placencia/0231673_SistemasDistribuidos/lab_2_commit_log/api/v1" // Cambiar por la ruta correcta en tu proyecto
+	"github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1" // Cambiar por la ruta correcta en tu proyecto
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

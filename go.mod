@@ -3,7 +3,6 @@ module github.com/Christian-Placencia/0231673_SistemasDistribuidos
 go 1.23
 
 require (
-	github.com/Christian-Placencia/0231673_SistemasDistribuidos/lab_2_commit_log v0.0.0-00010101000000-000000000000
 	github.com/stretchr/testify v1.9.0
 	github.com/tysonmote/gommap v0.0.3
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240604185151-ef581f913117
@@ -20,4 +19,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/Christian-Placencia/0231673_SistemasDistribuidos/lab_2_commit_log => ./
+replace github.com/Christian-Placencia/0231673_SistemasDistribuidos => ./

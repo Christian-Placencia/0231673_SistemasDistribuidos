@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/lab_2_commit_log/api/v1"
+	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1"
 )
 
 type Log struct {

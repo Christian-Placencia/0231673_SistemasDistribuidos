@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/lab_2_commit_log/api/v1" // Cambien esto por la ruta en su máquina
+	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1" // Cambien esto por la ruta en su máquina
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
