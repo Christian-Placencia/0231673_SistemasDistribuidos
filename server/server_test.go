@@ -1,4 +1,4 @@
-package log
+package server
 
 import (
 	"context"
@@ -6,7 +6,10 @@ import (
 	"os"
 	"testing"
 
-	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1" // Cambien esto por la ruta en su máquina
+	. "github.com/Christian-Placencia/0231673_SistemasDistribuidos/internal"
+
+	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1"
+
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -50,7 +53,7 @@ func setupTest(t *testing.T, fn func(*Config)) (
 	dir, err := os.MkdirTemp("", "server-test")
 	require.NoError(t, err)
 
-	clog, err := log.NewLog(dir, log.Config{})
+	clog, err := NewLog(dir, Config{})
 	require.NoError(t, err)
 
 	config = &Config{
@@ -59,7 +62,8 @@ func setupTest(t *testing.T, fn func(*Config)) (
 	if fn != nil {
 		fn(config)
 	}
-	server, err := NewGRPCServer(config)
+
+	server, err := NewGRPCServer(config.CommitLog)
 	require.NoError(t, err)
 
 	go func() {

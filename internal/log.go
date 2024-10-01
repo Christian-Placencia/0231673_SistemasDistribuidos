@@ -22,12 +22,19 @@ type Log struct {
 
 // NewLog creates a new log, initializing the log by loading segments from disk or creating new ones.
 func NewLog(dir string, c Config) (*Log, error) {
+	// Initialize Log struct with directory and config
 	l := &Log{
 		Dir:    dir,
 		Config: c,
 	}
 
-	return l, l.setup()
+	// Call setup to initialize any other components of the log
+	if err := l.setup(); err != nil {
+		return nil, err
+	}
+
+	// Return the initialized log
+	return l, nil
 }
 
 // setup initializes the log by loading existing segments from disk or creating a new segment.
