@@ -5,7 +5,7 @@ import (
 	"os"
 	"path"
 
-	api "github.com/Robinthatdoesnotsuck/DistributedSystemsPublicRepo/api/v1"
+	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1"
 	"google.golang.org/protobuf/proto"
 )
 

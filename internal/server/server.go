@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	api "github.com/Robinthatdoesnotsuck/proglog/api/v1"
+	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"google.golang.org/grpc"

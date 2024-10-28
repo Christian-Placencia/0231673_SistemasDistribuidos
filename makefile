@@ -1,4 +1,4 @@
-CONFIG_PATH=.SistemasDistribuidos-Proyecto/
+CONFIG_PATH=./
 
 .PHONY: init
 
