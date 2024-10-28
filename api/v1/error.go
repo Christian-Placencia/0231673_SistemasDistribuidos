@@ -1,4 +1,4 @@
-package api
+package log_v1
 
 import (
 	"fmt"
