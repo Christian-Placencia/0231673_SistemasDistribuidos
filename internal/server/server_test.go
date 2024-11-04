@@ -4,6 +4,7 @@ import (
 	"context"
 	"net"
 	"os"
+	"path/filepath"
 	"testing"
 
 	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1"
@@ -50,10 +51,8 @@ func setupTest(t *testing.T, fn func(*Config)) (
 	teardown func(),
 ) {
 	t.Helper()
-
 	l, err := net.Listen("tcp", "127.0.0.1:0")
 	require.NoError(t, err)
-
 	newClient := func(crtPath, keyPath string) (
 		*grpc.ClientConn,
 		api.LogClient,
@@ -68,42 +67,43 @@ func setupTest(t *testing.T, fn func(*Config)) (
 		require.NoError(t, err)
 		tlscreds := credentials.NewTLS(tlsConfig)
 		opts := []grpc.DialOption{grpc.WithTransportCredentials(tlscreds)}
-		conn, err := grpc.NewClient(l.Addr().String(), opts...)
+		conn, err := grpc.Dial(l.Addr().String(), opts...)
 		require.NoError(t, err)
 		client := api.NewLogClient(conn)
 		return conn, client, opts
 	}
-
 	var rootConn *grpc.ClientConn
 	rootConn, rootClient, _ = newClient(
 		tlsconfig.RootClientCertFile,
 		tlsconfig.RootClientKeyFile,
 	)
-
 	var nobodyConn *grpc.ClientConn
 	nobodyConn, nobodyClient, _ = newClient(
 		tlsconfig.NobodyClientCertFile,
 		tlsconfig.NobodyClientKeyFile,
 	)
-
-	severTLSConfig, err := tlsconfig.SetupTLSConfig(tlsconfig.TLSConfig{
+	serverTLSConfig, err := tlsconfig.SetupTLSConfig(tlsconfig.TLSConfig{
 		CertFile: tlsconfig.ServerCertFile,
 		KeyFile:  tlsconfig.ServerKeyFile,
 		CAFile:   tlsconfig.CAFile,
 		Server:   true,
 	})
-
 	require.NoError(t, err)
-	serverCreds := credentials.NewTLS(severTLSConfig)
-
+	serverCreds := credentials.NewTLS(serverTLSConfig)
 	dir, err := os.MkdirTemp("", "server-test")
 	require.NoError(t, err)
-
 	clog, err := log.NewLog(dir, log.Config{})
 	require.NoError(t, err)
 
-	authorizer := auth.New(tlsconfig.ACLModelFile, tlsconfig.ACLPolicyFile)
+	// Get the current working directory
+	wd, err := os.Getwd()
+	require.NoError(t, err)
 
+	// Construct the absolute paths
+	modelPath := filepath.Join(wd, "..", "..", "config", "model.conf")
+	policyPath := filepath.Join(wd, "..", "..", "config", "policy.csv")
+
+	authorizer := auth.New(modelPath, policyPath)
 	config = &Config{
 		CommitLog:  clog,
 		Authorizer: authorizer,
@@ -113,11 +113,9 @@ func setupTest(t *testing.T, fn func(*Config)) (
 	}
 	server, err := NewGRPCServer(config, grpc.Creds(serverCreds))
 	require.NoError(t, err)
-
 	go func() {
 		server.Serve(l)
 	}()
-
 	return rootClient, nobodyClient, config, func() {
 		server.Stop()
 		rootConn.Close()

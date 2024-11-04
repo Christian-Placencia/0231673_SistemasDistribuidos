@@ -29,15 +29,11 @@ func TestLog(t *testing.T) {
 			c.Segment.MaxStoreBytes = 32
 			log, err := NewLog(dir, c)
 			require.NoError(t, err)
-
 			fn(t, log)
 		})
 	}
 }
 
-// END: intro
-
-// START: append_read
 func testAppendRead(t *testing.T, log *Log) {
 	append := &api.Record{
 		Value: []byte("hello world"),
@@ -45,44 +41,36 @@ func testAppendRead(t *testing.T, log *Log) {
 	off, err := log.Append(append)
 	require.NoError(t, err)
 	require.Equal(t, uint64(0), off)
-
 	read, err := log.Read(off)
 	require.NoError(t, err)
 	require.Equal(t, append.Value, read.Value)
 }
 
-// END: append_read
-
-// START: out_of_range
 func testOutOfRangeErr(t *testing.T, log *Log) {
 	read, err := log.Read(1)
 	require.Nil(t, read)
 	require.Error(t, err)
 }
 
-// END: out_of_range
-
-// START: init_existing
-func testInitExisting(t *testing.T, o *Log) {
+func testInitExisting(t *testing.T, log *Log) {
 	append := &api.Record{
 		Value: []byte("hello world"),
 	}
 	for i := 0; i < 3; i++ {
-		_, err := o.Append(append)
+		_, err := log.Append(append)
 		require.NoError(t, err)
 	}
-	require.NoError(t, o.Close())
+	require.NoError(t, log.Close())
 
-	off, err := o.LowestOffset()
+	off, err := log.LowestOffset()
 	require.NoError(t, err)
 	require.Equal(t, uint64(0), off)
-	off, err = o.HighestOffset()
+	off, err = log.HighestOffset()
 	require.NoError(t, err)
 	require.Equal(t, uint64(2), off)
 
-	n, err := NewLog(o.Dir, o.Config)
+	n, err := NewLog(log.Dir, log.Config)
 	require.NoError(t, err)
-
 	off, err = n.LowestOffset()
 	require.NoError(t, err)
 	require.Equal(t, uint64(0), off)
@@ -91,9 +79,6 @@ func testInitExisting(t *testing.T, o *Log) {
 	require.Equal(t, uint64(2), off)
 }
 
-// END: init_existing
-
-// START: reader
 func testReader(t *testing.T, log *Log) {
 	append := &api.Record{
 		Value: []byte("hello world"),
@@ -101,20 +86,15 @@ func testReader(t *testing.T, log *Log) {
 	off, err := log.Append(append)
 	require.NoError(t, err)
 	require.Equal(t, uint64(0), off)
-
 	reader := log.Reader()
 	b, err := io.ReadAll(reader)
 	require.NoError(t, err)
-
 	read := &api.Record{}
 	err = proto.Unmarshal(b[lenWidth:], read)
 	require.NoError(t, err)
 	require.Equal(t, append.Value, read.Value)
 }
 
-// END: reader
-
-// START: truncate
 func testTruncate(t *testing.T, log *Log) {
 	append := &api.Record{
 		Value: []byte("hello world"),
@@ -123,10 +103,8 @@ func testTruncate(t *testing.T, log *Log) {
 		_, err := log.Append(append)
 		require.NoError(t, err)
 	}
-
 	err := log.Truncate(1)
 	require.NoError(t, err)
-
 	_, err = log.Read(0)
 	require.Error(t, err)
 }

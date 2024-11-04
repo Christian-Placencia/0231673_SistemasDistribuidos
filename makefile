@@ -1,4 +1,4 @@
-CONFIG_PATH=./
+CONFIG_PATH=C:/Users/chbas/OneDrive/2\ Materias/UP\ -\ Computo\ Distribuido/0231673_SistemasDistribuidos/.Logger
 
 .PHONY: init
 

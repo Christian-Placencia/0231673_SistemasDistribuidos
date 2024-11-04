@@ -26,6 +26,6 @@ func configFile(filename string) string {
 		panic(err)
 	}
 
-	// modify this
-	return filepath.Join(homeDir, "C:/Users/chbas/OneDrive/2 Materias/UP - Cómputo Distribuido/0231673_SistemasDistribuidos", filename)
+	// Adjusted the path to be relative to homeDir
+	return filepath.Join(homeDir, "OneDrive", "2 Materias", "UP - Computo Distribuido", "0231673_SistemasDistribuidos", ".Logger", filename)
 }

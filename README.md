@@ -1,1 +1,1 @@
-# Distributed Systems Public Repo
+# Distributed Systems Project
