@@ -7,10 +7,12 @@ import (
 	"testing"
 
 	api "github.com/Christian-Placencia/0231673_SistemasDistribuidos/api/v1"
+	"github.com/Christian-Placencia/0231673_SistemasDistribuidos/internal/log"
 
 	"github.com/Christian-Placencia/0231673_SistemasDistribuidos/auth"
 	tlsconfig "github.com/Christian-Placencia/0231673_SistemasDistribuidos/config"
-	"github.com/Christian-Placencia/0231673_SistemasDistribuidos/log"
+
+	//"github.com/Christian-Placencia/0231673_SistemasDistribuidos/log"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
