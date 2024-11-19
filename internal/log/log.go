@@ -132,11 +132,17 @@ func (l *Log) newSegment(off uint64) error {
 func (l *Log) Close() error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
+
 	for _, segment := range l.segments {
 		if err := segment.Close(); err != nil {
 			return err
 		}
 	}
+
+	// Reset the segments slice and activeSegment to release references
+	l.segments = nil
+	l.activeSegment = nil
+
 	return nil
 }
 
@@ -176,20 +182,31 @@ func (l *Log) HighestOffset() (uint64, error) {
 // END: offsets
 
 // START: truncate
-func (l *Log) Truncate(lowest uint64) error {
+func (l *Log) Truncate(offset uint64) error {
 	l.mu.Lock()
 	defer l.mu.Unlock()
+
 	var segments []*segment
-	for _, s := range l.segments {
-		if s.nextOffset <= lowest+1 {
-			if err := s.Remove(); err != nil {
-				return err
-			}
+	for _, segment := range l.segments {
+		if segment.nextOffset <= offset+1 {
+			segments = append(segments, segment)
 			continue
 		}
-		segments = append(segments, s)
+		// Ensure the segment is closed before removing
+		if err := segment.Close(); err != nil {
+			return err
+		}
+		if err := segment.Remove(); err != nil {
+			return err
+		}
 	}
 	l.segments = segments
+	// Reset activeSegment if it's removed
+	if len(l.segments) > 0 {
+		l.activeSegment = l.segments[len(l.segments)-1]
+	} else {
+		l.activeSegment = nil
+	}
 	return nil
 }
 

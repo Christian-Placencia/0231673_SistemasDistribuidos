@@ -62,19 +62,15 @@ func testInitExisting(t *testing.T, log *Log) {
 	}
 	require.NoError(t, log.Close())
 
-	off, err := log.LowestOffset()
+	// Reopen the log to simulate existing segments
+	newLog, err := NewLog(log.Dir, log.Config)
 	require.NoError(t, err)
-	require.Equal(t, uint64(0), off)
-	off, err = log.HighestOffset()
-	require.NoError(t, err)
-	require.Equal(t, uint64(2), off)
+	defer newLog.Close()
 
-	n, err := NewLog(log.Dir, log.Config)
-	require.NoError(t, err)
-	off, err = n.LowestOffset()
+	off, err := newLog.LowestOffset()
 	require.NoError(t, err)
 	require.Equal(t, uint64(0), off)
-	off, err = n.HighestOffset()
+	off, err = newLog.HighestOffset()
 	require.NoError(t, err)
 	require.Equal(t, uint64(2), off)
 }
